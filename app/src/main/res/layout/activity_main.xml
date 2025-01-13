@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/coordinatorLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <android.opengl.GLSurfaceView
+      android:id="@+id/surfaceview"
+      android:layout_width="fill_parent"
+      android:layout_height="fill_parent" />
+
+  <!-- Distance and Safety Message Container -->
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="top|center_horizontal"
+      android:layout_marginTop="16dp"
+      android:orientation="vertical"
+      android:background="#55000000"
+      android:padding="8dp">
+
+    <TextView
+        android:id="@+id/distanceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Distance: 0 meters"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:padding="4dp"/>
+
+    <TextView
+        android:id="@+id/safeDistanceMessage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Calculating..."
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        android:padding="4dp"/>
+  </LinearLayout>
+
+  <!-- Existing Buttons Container -->
+  <LinearLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="80dp"
+      android:layout_gravity="bottom|center_horizontal"
+      app:layout_dodgeInsetEdges="bottom">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/scanButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="60dp"
+        android:text="@string/scan_available" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/clearButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingHorizontal="60dp"
+        android:text="@string/clear" />
+
+  </LinearLayout>
+
+  <androidx.appcompat.widget.SwitchCompat
+      android:id="@+id/useCloudMlSwitch"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="top|end"
+      android:padding="16dp"
+      android:background="#55FFFFFF"
+      android:text="@string/use_cloud_ml" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
