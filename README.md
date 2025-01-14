@@ -1,6 +1,5 @@
 Here's a more detailed README.md specifically for your code:
 
-```markdown
 # TFLite Circuit Breaker Detector Metadata Writer
 
 A Python application for adding metadata to a TensorFlow Lite model specifically designed for circuit breaker detection. The application provides two different approaches for metadata addition, allowing flexibility in how model information is specified.
