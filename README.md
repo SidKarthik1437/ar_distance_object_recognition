@@ -1,52 +1,115 @@
-# ARCore ML sample
+Here's a more detailed README.md specifically for your code:
 
-An [ARCore](https://developers.google.com/ar) sample demonstrating how to use
-camera images as an input for machine learning algorithms, and how to use the
-results of the inference model to create anchors in the AR scene.
+```markdown
+# TFLite Circuit Breaker Detector Metadata Writer
 
-<p align="center">
-  <img width="200" src="docs/screenshot.png">
-</p>
+A Python application for adding metadata to a TensorFlow Lite model specifically designed for circuit breaker detection. The application provides two different approaches for metadata addition, allowing flexibility in how model information is specified.
 
-This sample uses [ML Kit's Object Detection](https://developers.google.com/ml-kit/vision/object-detection)
-and (optionally) [Google's Cloud Vision API](https://cloud.google.com/vision/docs/object-localizer)
-to infer object labels from camera images.
+## Description
 
-## Getting Started
-To try this app, you'll need the following:
+This tool adds essential metadata to TFLite models, including:
+- Input/output tensor specifications
+- Normalization parameters
+- Model information
+- Label mappings
+- Color space information
 
- * An ARCore compatible device running [Google Play Services for AR](https://play.google.com/store/apps/details?id=com.google.ar.core) (ARCore) 1.24 or later
- * Android Studio 4.1 or later
- 
-### Configure ML Kit's classification model
-By default, this sample uses ML Kit's built-in coarse classifier, which is only built for five categories and provides limited information about the detected objects.
+## Prerequisites
 
-For better classification results:
+```bash
+pip install tflite-support==0.4.4
+```
 
-1. Read [Label images with a custom model on Android](https://developers.google.com/ml-kit/vision/object-detection/custom-models/android)
-   on ML Kit's documentation website.
-2. Modify `MLKitObjectAnalyzer.kt` in `app/src/main/java/com/google/ar/core/examples/java/ml/classification/` to specify a custom model.
+## Project Structure
 
-### \[Optional] Configure Google Cloud Vision API
-This sample also supports results from [the Google Cloud Vision API](https://cloud.google.com/vision/docs/object-localizer) for even more information on detected objects.
+```
+├── metadata_writer.py          # Main script
+├── breaker_detector.tflite     # Your input TFLite model
+├── labels.txt                  # Generated labels file
+└── breaker_detector_with_metadata.tflite  # Output model with metadata
+```
 
-To configure Google Cloud Vision APIs:
+## Implementation Methods
 
-1. Follow steps for configuring a Google Cloud project, enabling billing, enabling the API, and enabling a service account on [Set up the Vision API documentation](https://cloud.google.com/vision/docs/setup).
-2. Save the resulting service account key file to `app/src/main/res/raw/credentials.json`.
+### 1. Detailed Metadata Addition (add_metadata_to_tflite)
+This method provides fine-grained control over metadata specifications:
+- Detailed model information
+- Custom input tensor specifications
+- Custom output tensor specifications
+- Specific normalization parameters ([0.0], [255.0])
 
-## License
+```python
+add_metadata_to_tflite(
+    model_path="breaker_detector.tflite",
+    label_file="labels.txt",
+    output_path="breaker_detector_with_metadata.tflite"
+)
+```
 
-    Copyright 2021 Google LLC
+### 2. Simplified Inference-Optimized Method (add_metadata_to_tflite2)
+This method uses standardized parameters for inference:
+- Simplified metadata addition
+- Standard normalization parameters ([127.5, 127.5, 127.5])
+- Automatic tensor configuration
 
-    Licensed under the Apache License, Version 2.0 (the "License");
-    you may not use this file except in compliance with the License.
-    You may obtain a copy of the License at
+```python
+add_metadata_to_tflite2(
+    model_path="breaker_detector.tflite",
+    label_file="labels.txt",
+    output_path="breaker_detector_with_metadata.tflite"
+)
+```
 
-        https://www.apache.org/licenses/LICENSE-2.0
+## Model Specifications
 
-    Unless required by applicable law or agreed to in writing, software
-    distributed under the License is distributed on an "AS IS" BASIS,
-    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-    See the License for the specific language governing permissions and
-    limitations under the License.
+### Input Requirements
+- Image Size: 224 x 224 pixels
+- Channels: 3 (RGB)
+- Pixel Value Range: [0, 1]
+
+### Output Format
+- Bounding boxes in [x, y, width, height] format
+
+## Usage
+
+1. Place your TFLite model in the project directory as `breaker_detector.tflite`
+
+2. Run the script:
+```bash
+python metadata_writer.py
+```
+
+The script will:
+- Generate a labels.txt file with "circuit_breaker" class
+- Add metadata to your model using the inference-optimized method
+- Save the new model as `breaker_detector_with_metadata.tflite`
+
+## Normalization Parameters
+
+### Method 1 (Detailed)
+- Mean: [0.0]
+- Standard Deviation: [255.0]
+
+### Method 2 (Inference-Optimized)
+- Mean: [127.5, 127.5, 127.5]
+- Standard Deviation: [127.5, 127.5, 127.5]
+
+## Metadata Information
+
+The detailed method includes:
+- Model Name: "Circuit Breaker Detector"
+- Version: "v1"
+- Description: "Detects circuit breakers in images and returns their bounding boxes"
+- License: "Apache License. Version 2.0"
+
+## Error Handling
+
+Common issues to watch for:
+- File path errors: Ensure model and label files are in the correct location
+- Tensor type mismatches: Verify model input/output specifications
+- Normalization parameter format: Must be lists, not single values
+
+## Dependencies
+
+- tflite-support==0.4.4
+- TensorFlow Lite
